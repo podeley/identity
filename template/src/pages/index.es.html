@@ -1,0 +1,64 @@
+<!--meta
+{
+  "title": "La necesidad que resuelve — Matías Podeley",
+  "description": "Una o dos líneas que se leen enteras en el preview de WhatsApp y de LinkedIn. Decí el resultado, no la técnica."
+}
+-->
+
+<section class="hero wrap">
+  <p class="kicker">Segmento · Zona · Fuente de datos</p>
+  <h1>La necesidad que resuelve, en una línea.</h1>
+  <p class="hero-sub">Dos líneas de contexto: qué se mide, con qué datos públicos, y por qué le sirve a quien está leyendo. Sin método todavía — el método va abajo, si es que va.</p>
+</section>
+
+<div class="rule" role="presentation"></div>
+
+<section class="pd-section wrap">
+
+  <!-- LA FIGURA. Es lo único pesado de la página. Tres formas de usarla:
+       1. imagen        → <img src="/assets/figura.webp" width="1600" height="1000" alt="…">
+       2. iframe        → <iframe src="…" title="…" loading="lazy"></iframe>
+       3. app montada   → <div class="figure-mount" id="app"></div> + su script
+       En los tres casos el CSS le da caja: 16:10 en desktop, 3:4 en teléfono. -->
+  <figure class="figure">
+    <img src="/assets/figura.webp" width="1600" height="1000" alt="Descripción de lo que se ve en la figura." />
+    <figcaption>Qué estás mirando, en una línea. Unidades y período.</figcaption>
+  </figure>
+
+  <!-- TRES HALLAZGOS. Uno por columna, regla de color arriba. El tercero puede
+       ser el límite honesto: .finding--limit lo pinta en gold-ink. -->
+  <div class="findings">
+    <div class="finding">
+      <h3>El hallazgo que más le importa al cliente</h3>
+      <p>Una línea con el número concreto. Los números venden más que los adjetivos.</p>
+    </div>
+    <div class="finding">
+      <h3>El segundo, que da contexto</h3>
+      <p>Una línea. Si hay validación contra algo conocido, es acá donde va.</p>
+    </div>
+    <div class="finding finding--limit">
+      <h3>El límite</h3>
+      <p>Qué no se puede afirmar con estos datos. Va siempre: es lo que hace creíble a los otros dos.</p>
+    </div>
+  </div>
+
+  <!-- CORTE DE DATOS. Obligatorio. Sin la fecha a la vista, un dato de 2024
+       parece un dato malo en vez de una invitación a pedir el actualizado. -->
+  <p class="datanote">
+    Datos públicos hasta <strong>31 de diciembre de 2024</strong> · fuente:
+    <a href="#">nombre de la fuente</a> · procesamiento propio.
+    Esta demo es una foto: el dato vivo se actualiza a pedido.
+  </p>
+
+  <!-- EL CTA. Es para lo que existe la página. El subject del mailto es la
+       métrica del funnel: identifica de qué demo vino la consulta. -->
+  <div class="cta">
+    <h2>¿Lo necesitás con los datos de hoy?</h2>
+    <p>Puedo actualizarlo al período que necesites, extenderlo a tu área de interés, o armar la versión con tus propios datos.</p>
+    <div class="cta-actions">
+      <a class="btn btn--primary" href="mailto:mpodeley@gmail.com?subject=DEMO%20%E2%80%94%20dato%20actualizado&amp;body=Hola%20Matias%2C%0A%0A">Escribime</a>
+      <a class="link-plain" href="https://podeley.ar/">Ver los otros casos <span class="arw">→</span></a>
+    </div>
+  </div>
+
+</section>

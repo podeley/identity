@@ -1,0 +1,9 @@
+{
+  "origin": "https://DEMO.podeley.ar",
+  "brand": "Matías Podeley",
+  "repo": "https://github.com/podeley/DEMO",
+  "ogImage": "/assets/og.png",
+  "langs": ["es"],
+  "nav": [],
+  "backlink": { "href": "https://podeley.ar/ep/", "es": "← podeley.ar", "en": "← podeley.ar" }
+}

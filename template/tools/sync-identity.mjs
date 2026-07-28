@@ -30,7 +30,10 @@ const FONTS = [
 const PROFILES = {
   demo: { styles: ['tokens.css', 'chrome.css', 'demo.css'], fonts: 'static/fonts', shell: true },
   portfolio: { styles: ['tokens.css', 'chrome.css'], fonts: 'static/fonts', shell: true },
-  app: { styles: ['tokens.css', 'chrome.css'], fonts: 'src/fonts', shell: false },
+  /* A Vite/React app has its own shell and its own layout; pulling chrome.css
+     would fight it (body background, .wrap, masthead). Apps take the identity
+     that actually matters — type and colour — and build their chrome from it. */
+  app: { styles: ['tokens.css'], fonts: 'src/fonts', shell: false },
 }
 
 const args = process.argv.slice(2)

@@ -18,8 +18,7 @@
 import { readFile, writeFile, mkdir, access } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
-const BASE = process.env.IDENTITY_BASE ||
-  'https://raw.githubusercontent.com/podeley/identity/main/kit'
+const REPO = 'podeley/identity'
 
 const FONTS = [
   'ibm-plex-mono-400.woff2',
@@ -38,14 +37,13 @@ const args = process.argv.slice(2)
 const check = args.includes('--check')
 const flag = args.find((a) => a.startsWith('--profile='))?.split('=')[1]
 
-let profile = flag
-if (!profile) {
-  try {
-    profile = JSON.parse(await readFile('identity.json', 'utf8')).profile
-  } catch {
-    /* fall through to the error below */
-  }
+let cfg = {}
+try {
+  cfg = JSON.parse(await readFile('identity.json', 'utf8'))
+} catch {
+  /* no identity.json — --profile must then be given */
 }
+const profile = flag ?? cfg.profile
 if (!PROFILES[profile]) {
   console.error(
     `Unknown profile ${JSON.stringify(profile)}. Set {"profile":"demo"} in identity.json ` +
@@ -62,13 +60,26 @@ const plan = [
 ]
 if (spec.shell) plan.push(['build.mjs', 'build.mjs'], ['layout.html', 'src/layout.html'])
 
-/* raw.githubusercontent caches for ~5 min, so a sync run right after a kit push
-   silently vendors the previous version. A query param busts it; the files are
-   small and we compare bytes, so re-downloading costs nothing. */
-const CACHE_BUST = `?cb=${process.hrtime.bigint().toString(36)}`
+/* raw.githubusercontent serves branch URLs from a CDN that caches for minutes,
+   and a cache-busting query param does NOT reliably beat it (measured: x-cache
+   HIT on a unique query). So resolve the ref to a commit SHA once and fetch by
+   SHA: a new commit is a new URL, always fresh — and the vendoring becomes
+   reproducible. Pin "ref" in identity.json to freeze a site on a kit version. */
+const ref = process.env.IDENTITY_REF || cfg.ref || 'main'
+
+const sha = /^[0-9a-f]{40}$/.test(ref)
+  ? ref
+  : await fetch(`https://api.github.com/repos/${REPO}/commits/${ref}`, {
+      headers: { Accept: 'application/vnd.github.sha' },
+    }).then(async (r) => {
+      if (!r.ok) throw new Error(`cannot resolve ${REPO}@${ref}: HTTP ${r.status}`)
+      return (await r.text()).trim()
+    })
+
+const BASE = `https://raw.githubusercontent.com/${REPO}/${sha}/kit`
 
 async function pull(remote) {
-  const res = await fetch(`${BASE}/${remote}${CACHE_BUST}`, { cache: 'no-store' })
+  const res = await fetch(`${BASE}/${remote}`)
   if (!res.ok) throw new Error(`${remote}: HTTP ${res.status} from ${BASE}`)
   return Buffer.from(await res.arrayBuffer())
 }
@@ -96,15 +107,17 @@ for (const [remote, local] of plan) {
   changed.push(`${current ? 'updated' : 'added  '}  ${local}`)
 }
 
+const at = `${REPO}@${sha.slice(0, 7)}${ref === sha ? ' (pinned)' : ` (${ref})`}`
+
 if (check) {
   if (stale.length) {
-    console.error(`identity kit out of date (${stale.length}):\n  ${stale.join('\n  ')}`)
+    console.error(`identity kit out of date vs ${at} (${stale.length}):\n  ${stale.join('\n  ')}`)
     console.error('\nrun: node tools/sync-identity.mjs')
     process.exit(1)
   }
-  console.log(`identity kit up to date (profile: ${profile})`)
+  console.log(`identity kit up to date · profile ${profile} · ${at}`)
 } else {
   console.log(changed.length ? changed.join('\n') : 'already up to date')
-  console.log(`\nprofile: ${profile} · ${plan.length} files checked`)
+  console.log(`\nprofile: ${profile} · ${plan.length} files · ${at}`)
   if (changed.length) console.log('remember to commit the vendored files')
 }

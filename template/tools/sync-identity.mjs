@@ -62,8 +62,13 @@ const plan = [
 ]
 if (spec.shell) plan.push(['build.mjs', 'build.mjs'], ['layout.html', 'src/layout.html'])
 
+/* raw.githubusercontent caches for ~5 min, so a sync run right after a kit push
+   silently vendors the previous version. A query param busts it; the files are
+   small and we compare bytes, so re-downloading costs nothing. */
+const CACHE_BUST = `?cb=${process.hrtime.bigint().toString(36)}`
+
 async function pull(remote) {
-  const res = await fetch(`${BASE}/${remote}`)
+  const res = await fetch(`${BASE}/${remote}${CACHE_BUST}`, { cache: 'no-store' })
   if (!res.ok) throw new Error(`${remote}: HTTP ${res.status} from ${BASE}`)
   return Buffer.from(await res.arrayBuffer())
 }

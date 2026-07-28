@@ -49,6 +49,21 @@
   letter-spacing: .03em;
 }
 
+/* Una figura apaisada y densa metida en 375 px es ilegible, y la figura es el
+   contenido de la demo. Envolver la imagen en un <a> al archivo permite abrirla
+   a tamaño completo y hacer pinch-zoom, que es como se mira un gráfico denso en
+   un teléfono. El aviso aparece sólo donde hace falta. */
+.figure > a { display: block; }
+.figure__hint { display: none; }
+@media (max-width: 760px) {
+  .figure__hint {
+    display: block;
+    margin-top: .35rem;
+    color: var(--pd-link);
+    font-weight: 500;
+  }
+}
+
 /* ---------- findings ------------------------------------------------------- */
 /* Three one-liners under a coloured rule — the print brochure's three-up. */
 

@@ -37,6 +37,13 @@ const {
 if (!origin) throw new Error('site.config.json: "origin" is required (e.g. "https://vm.podeley.ar")')
 const DEFAULT_LANG = langs[0]
 
+/* Sirve el sitio bajo un subpath en vez de la raíz del dominio: "/litio/" para
+   podeley.github.io/litio/, "/" para un dominio propio. Permite publicar en
+   github.io antes de que exista el CNAME, sin tocar el copy — las páginas
+   siguen escribiéndose con rutas absolutas tipo /assets/foo.png. */
+const BASE = '/' + (config.basePath ?? '').replace(/^\/+|\/+$/g, '') + '/'
+const withBase = (p) => (BASE === '/' ? p : p.replace(/^\//, BASE))
+
 /* Chrome strings live here, not in each site — that is the point of the kit. */
 const STRINGS = {
   es: {
@@ -66,8 +73,8 @@ const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 const urlFor = (slug, lang) => {
-  const base = lang === DEFAULT_LANG ? '/' : `/${lang}/`
-  return slug === 'index' ? base : `${base}${slug}/`
+  const prefix = lang === DEFAULT_LANG ? BASE : `${BASE}${lang}/`
+  return slug === 'index' ? prefix : `${prefix}${slug}/`
 }
 
 const outFor = (slug, lang) => {
@@ -161,7 +168,7 @@ const sheets = (await readdir(join(SRC, 'styles')))
 if (!sheets.includes('tokens.css')) {
   throw new Error('src/styles/tokens.css is missing — run node tools/sync-identity.mjs')
 }
-const stylesHtml = sheets.map((f) => `<link rel="stylesheet" href="/styles/${f}">`).join('\n')
+const stylesHtml = sheets.map((f) => `<link rel="stylesheet" href="${BASE}styles/${f}">`).join('\n')
 
 for (const p of pages) {
   const s = STRINGS[p.lang]
@@ -195,7 +202,7 @@ for (const p of pages) {
     .replaceAll('{{description}}', esc(p.meta.description))
     .replaceAll('{{url}}', url)
     .replaceAll('{{origin}}', origin)
-    .replaceAll('{{og_image}}', ogImage.startsWith('http') ? ogImage : origin + ogImage)
+    .replaceAll('{{og_image}}', ogImage.startsWith('http') ? ogImage : origin + withBase(ogImage))
     .replaceAll('{{canonical}}', canonical)
     .replaceAll('{{alternates}}', alternates)
     .replaceAll('{{styles}}', stylesHtml)
@@ -206,7 +213,11 @@ for (const p of pages) {
     .replaceAll('{{nav}}', navHtml(p.lang, p.meta.nav))
     .replaceAll('{{lang_toggle}}', toggle)
     .replaceAll('{{footer}}', footerHtml(p.lang))
-    .replaceAll('{{body}}', p.body)
+    .replaceAll('{{base}}', BASE)
+    // El copy se escribe con rutas absolutas (/assets/foo.png); bajo un subpath
+    // hay que reescribirlas. Sólo en el cuerpo: lo que genera el build ya sale
+    // con BASE puesto, y así no se prefija dos veces.
+    .replaceAll('{{body}}', BASE === '/' ? p.body : p.body.replace(/\b(href|src)="\/(?!\/)/g, `$1="${BASE}`))
     .replace(/\n{2,}(?=<(?:link|meta)\b)/g, '\n') // an empty slot must not gap <head>
 
   const out = outFor(p.slug, p.lang)

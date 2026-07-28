@@ -27,9 +27,10 @@
   background: var(--pd-surface-2);
   overflow: hidden;
 }
-.figure > img,
-.figure > svg,
-.figure > canvas {
+/* Descendiente, no hijo directo: la imagen suele ir envuelta en el <a> que la
+   abre a tamaño completo, y con `>` quedaba sin ancho y la recortaba el
+   overflow del contenedor. */
+.figure :is(img, svg, canvas) {
   display: block; width: 100%; height: auto;
 }
 /* Maps and interactive charts arrive as an iframe or a mounted div. They need

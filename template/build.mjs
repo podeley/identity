@@ -107,7 +107,14 @@ function navHtml(lang, active) {
 
 function footerHtml(lang) {
   const s = STRINGS[lang]
-  const links = footerLinks ?? DEFAULT_FOOTER_LINKS
+  // A site with its own segment nav (the portfolio) links the footer map to its
+  // own pages, in the current language. A demo links out to podeley.ar.
+  const links =
+    footerLinks ??
+    (nav.length
+      ? [{ href: urlFor('index', lang), es: 'podeley.ar', en: 'podeley.ar' },
+         ...nav.map((i) => ({ href: urlFor(i.slug, lang), es: i.es, en: i.en ?? i.es }))]
+      : DEFAULT_FOOTER_LINKS)
   const map = links.map((l) => `<a href="${l.href}">${esc(l[lang] ?? l.es)}</a>`).join(' · ')
   return `  <div class="wrap foot-inner">
     <p class="foot-map">${map}</p>

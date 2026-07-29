@@ -28,12 +28,16 @@ const FONTS = [
 ]
 
 const PROFILES = {
-  demo: { styles: ['tokens.css', 'chrome.css', 'demo.css'], fonts: 'static/fonts', shell: true },
-  portfolio: { styles: ['tokens.css', 'chrome.css'], fonts: 'static/fonts', shell: true },
+  demo: { styles: ['tokens.css', 'chrome.css', 'demo.css'], into: 'src/styles', fonts: 'static/fonts', shell: true },
+  portfolio: { styles: ['tokens.css', 'chrome.css'], into: 'src/styles', fonts: 'static/fonts', shell: true },
   /* A Vite/React app has its own shell and its own layout; pulling chrome.css
      would fight it (body background, .wrap, masthead). Apps take the identity
      that actually matters — type and colour — and build their chrome from it. */
-  app: { styles: ['tokens.css'], fonts: 'src/fonts', shell: false },
+  app: { styles: ['tokens.css'], into: 'src/styles', fonts: 'src/fonts', shell: false },
+  /* Los sitios de caso siguen siendo MkDocs Material: un solo extra.css que
+     hace de puente con el tema y trae los tokens inline (Material carga su CSS
+     antes, así que separarlo en capas no ayuda acá). */
+  mkdocs: { styles: ['mkdocs/extra.css'], into: 'docs/stylesheets', fonts: 'docs/fonts', shell: false },
 }
 
 const args = process.argv.slice(2)
@@ -58,7 +62,7 @@ const spec = PROFILES[profile]
 
 /* what → where */
 const plan = [
-  ...spec.styles.map((f) => [`${f}`, `src/styles/${f}`]),
+  ...spec.styles.map((f) => [f, `${spec.into}/${f.split('/').pop()}`]),
   ...FONTS.map((f) => [`fonts/${f}`, `${spec.fonts}/${f}`]),
 ]
 if (spec.shell) plan.push(['build.mjs', 'build.mjs'], ['layout.html', 'src/layout.html'])

@@ -38,7 +38,7 @@ if (!origin) throw new Error('site.config.json: "origin" is required (e.g. "http
 const DEFAULT_LANG = langs[0]
 
 /* Sirve el sitio bajo un subpath en vez de la raíz del dominio: "/litio/" para
-   podeley.github.io/litio/, "/" para un dominio propio. Permite publicar en
+   podeley.github.io/sat-litio/, "/" para un dominio propio. Permite publicar en
    github.io antes de que exista el CNAME, sin tocar el copy — las páginas
    siguen escribiéndose con rutas absolutas tipo /assets/foo.png. */
 const BASE = '/' + (config.basePath ?? '').replace(/^\/+|\/+$/g, '') + '/'

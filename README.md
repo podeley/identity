@@ -78,16 +78,49 @@ no hay prefijo ni selector.
 Una página, siempre igual:
 
 ```
-hero → regla → figura → tres hallazgos → nota de corte de datos → CTA
+hero → regla → figura → hallazgos → nota de corte de datos → CTA
 ```
 
 - **La figura** es lo único pesado. Imagen, `<iframe>` o `<div class="figure-mount">`; el CSS
   le da caja 16:10 en desktop y 3:4 en teléfono.
-- **Tres hallazgos**, uno por columna. El tercero suele ser el límite honesto
-  (`.finding--limit`): es lo que hace creíbles a los otros dos.
+- **Los hallazgos** van en columnas, y uno es el límite honesto (`.finding--limit`): es lo que
+  hace creíbles a los demás. El límite es obligatorio; **la cantidad no**. Durante un tiempo esto
+  decía "tres hallazgos" y las cinco demos salieron con la misma estructura de dos más el límite
+  — se leían como un molde relleno. Dos, tres o cuatro, según lo que el caso dé. Ver
+  `estilo/SKILL.md`, sección "Anti-molde".
 - **La nota de corte** es obligatoria. Sin la fecha a la vista, un dato de 2024 parece un dato
   malo en vez de una invitación a pedir el actualizado.
 - **El CTA** es para lo que existe la página. El `subject` del mailto identifica de qué demo
   vino la consulta — es la métrica del funnel.
 
 Presupuesto: **≤ 5 MB de payload publicado**, para que abra con datos móviles.
+
+## La capa de prosa
+
+`kit/` define cómo se ve un sitio. `estilo/` define cómo se escribe: es la misma idea de capa
+compartida, aplicada al texto en vez de al CSS.
+
+| archivo | qué trae |
+|---|---|
+| `estilo/SKILL.md` | el núcleo — Capa 1 mecánica, Capa 2 voz, anti-molde, checklist |
+| `estilo/references/es.md` | voseo rioplatense, números y fechas |
+| `estilo/references/en.md` | US spelling, cómo no calcar del español |
+| `estilo/references/antislop.md` | léxico prohibido ES/EN con reemplazos |
+| `estilo/scripts/lint-prosa.sh` | chequeo mecánico, exit ≠ 0 si encuentra algo |
+| `estilo/CLAUDE.global.md` | copia de `~/.claude/CLAUDE.md`, que apunta a la skill |
+
+Dos capas: la **Mecánica** (números, fechas, comillas, siglas) rige en todos los proyectos,
+incluidos los de marca ajena. La **Voz** (registro seco, cifra antes que adjetivo, cero emoji,
+límites explícitos) rige solo en research y en los sitios propios.
+
+Convención numérica: **la inglesa en los dos idiomas** — decimal con punto, miles con coma,
+porcentaje pegado (`19,671`, `66.4%`, `15%`), también en español. Se aparta de la RAE a propósito,
+para que una cifra no haya que reformatearla al traducir la página.
+
+```bash
+./estilo/install.sh                          # enlaza la skill en ~/.claude/skills/
+./estilo/scripts/lint-prosa.sh <ruta> --perfil demo|research|didactico|ajena
+```
+
+Perfiles: `demo` para las landings, `research` para los MkDocs, `didactico` para los cursos, y
+`ajena` para sitios de marca de terceros, que solo heredan la Mecánica.

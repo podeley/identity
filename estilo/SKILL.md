@@ -1,6 +1,6 @@
 ---
 name: estilo
-description: "Guía de estilo de prosa para todo texto publicable — sitios, landings, docs de research, papers, READMEs, cursos, informes y copy comercial, en español y en inglés. Usala antes de escribir o editar cualquier texto que vaya a leer una persona — hero, landing, página, artículo, blog, abstract, resumen ejecutivo, brochure, propuesta, MDX de curso, docs de MkDocs. También al reescribir, acortar, traducir o revisar texto existente. Palabras que la disparan — escribir, redactar, reescribir, copy, texto, prosa, landing, hero, informe, paper, artículo, guía de estilo, tono, voz, write, draft, rewrite, prose, landing page, report, style guide, tone of voice."
+description: "Guía de estilo de prosa para texto publicable — sitios, landings, papers, docs, cursos, informes y copy comercial, en español e inglés. Usala antes de escribir, reescribir, acortar, traducir o revisar cualquier texto que lea una persona."
 ---
 
 # Guía de estilo — prosa publicable

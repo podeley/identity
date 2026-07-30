@@ -16,7 +16,7 @@
 /* ---------- 2. Tokens (light-only) ----------------------------------------- */
 :root{
   --pd-blue:#4EA8DE; --pd-orange:#FF7B54; --pd-green:#43C59E; --pd-gold:#F2C14E;
-  --pd-orange-ink:#c24b22; --pd-gold-ink:#8a6412;
+  --pd-blue-ink:#1f6a9b; --pd-orange-ink:#c24b22; --pd-green-ink:#147a5f; --pd-gold-ink:#8a6412;
   --pd-bg:#ffffff; --pd-surface-2:#f6f7f8;
   --pd-border:#d9dce0; --pd-border-soft:#e8eaed;
   --pd-text:#16181d; --pd-text-muted:#4a5361; --pd-text-faint:#6b7280;
@@ -107,7 +107,10 @@ html{overflow-x:clip}
 /* Estos son sitios didácticos, no el portfolio: se conserva la navegación y el
    índice de Material, que es lo que los hace legibles como documentación. */
 
-.md-sidebar { display: block !important; }
+/* `:not([hidden])` es obligatorio: Material implementa el `hide: [navigation, toc]`
+   del front-matter poniendo el atributo `hidden` en el sidebar, y un
+   `display:block !important` pelado se lo pisa y saca la navegación en las portadas. */
+.md-sidebar:not([hidden]) { display: block !important; }
 .md-nav__title { font-family: var(--pd-font-display); font-weight: 500; }
 .md-nav__link--active { color: var(--pd-link); font-weight: 600; }
 
@@ -146,6 +149,28 @@ html{overflow-x:clip}
   font-family: var(--pd-font-body);
   font-weight: 600;
   background: var(--pd-surface-2);
+}
+/* Material pinta cada tipo de admonición con su color de fábrica y gana por
+   especificidad (`.note > .admonition-title`), así que hay que igualarla para
+   traerlas a los acentos de la identidad. */
+.md-typeset .admonition.note, .md-typeset details.note,
+.md-typeset .admonition.info, .md-typeset details.info { border-left-color: var(--pd-blue-ink); }
+.md-typeset .note > .admonition-title, .md-typeset .note > summary,
+.md-typeset .info > .admonition-title, .md-typeset .info > summary {
+  background: var(--pd-surface-2);
+  color: var(--pd-blue-ink);
+}
+.md-typeset .note > .admonition-title::before, .md-typeset .note > summary::before,
+.md-typeset .info > .admonition-title::before, .md-typeset .info > summary::before {
+  background-color: var(--pd-blue-ink);
+}
+.md-typeset .admonition.warning, .md-typeset details.warning { border-left-color: var(--pd-caveat); }
+.md-typeset .warning > .admonition-title, .md-typeset .warning > summary {
+  background: var(--pd-surface-2);
+  color: var(--pd-caveat);
+}
+.md-typeset .warning > .admonition-title::before, .md-typeset .warning > summary::before {
+  background-color: var(--pd-caveat);
 }
 
 /* código: mono de la identidad */

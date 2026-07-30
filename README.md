@@ -34,6 +34,7 @@ Cada sitio declara uno en `identity.json`:
 | `demo` | tokens + chrome + demo + layout + build + fuentes → `static/fonts` | demos de una página |
 | `portfolio` | tokens + chrome + layout + build + fuentes → `static/fonts` | podeley.ar |
 | `app` | tokens + chrome + fuentes → `src/fonts` | apps Vite/React que tienen su propio shell |
+| `mkdocs` | `mkdocs/extra.css` → `docs/stylesheets` + fuentes → `docs/fonts` | los sitios de caso sobre MkDocs Material |
 
 ## Usarlo en un sitio
 
@@ -93,7 +94,33 @@ hero → regla → figura → hallazgos → nota de corte de datos → CTA
 - **El CTA** es para lo que existe la página. El `subject` del mailto identifica de qué demo
   vino la consulta — es la métrica del funnel.
 
-Presupuesto: **≤ 5 MB de payload publicado**, para que abra con datos móviles.
+Presupuesto: **≤ 5 MB de payload publicado**, para que abra con datos móviles. En los sitios
+MkDocs se mide por página, no por repo: el visitante carga una a la vez, y eso es lo que fija
+el tiempo de apertura real.
+
+## Achicar los mapas
+
+Los mapas que exportan los pipelines de caso pesan entre 2 y 24 MB, y el motivo es siempre el
+mismo: cada raster que dibuja el mapa es un PNG de matplotlib incrustado en base64. Aparece de
+dos formas — un cuadro por paso del slider, o un único `ImageOverlay` de Folium.
+
+```bash
+python3 <este-repo>/tools/slim-map.py -i docs/assets/*.html
+```
+
+Reencodea esos rasters a WebP y deja el resto del documento intacto, así que el JavaScript de
+Leaflet sigue funcionando. Redondea además las coordenadas del GeoJSON a 5 decimales, que es
+~1 m. Sobre los dos peores casos: 23.84 → 4.52 MB el slider de 31 cuadros, 11.78 → 2.37 MB el
+overlay de 2969 × 2165.
+
+La calidad por defecto es **85**, elegida midiendo contra los originales. El canal alfa sobrevive
+sin cambios en cualquier ajuste, y el error de color es ruido simétrico, no un corrimiento: se
+percibe como pérdida de textura fina. Con q80 los mapas salían pálidos — 11.5% de los píxeles
+renderizados diferían en más de 8/255. Con q85 eso baja a 6.2% y el peor caso todavía entra en
+el presupuesto. Con q90 no se ve diferencia contra q85 y ese slider se pasa de 5 MB.
+
+Los HTML resultantes se commitean: son artefactos generados, y el pipeline que los produjo queda
+en el repo de research original.
 
 ## La capa de prosa
 

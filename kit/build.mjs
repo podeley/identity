@@ -27,6 +27,8 @@ const {
   origin,
   brand = 'Matías Podeley',
   ogImage = '/assets/og.png',
+  ogImageSize = [1200, 630],
+  analytics = null,
   repo = 'https://github.com/podeley',
   langs = ['es'],
   nav = [],
@@ -71,6 +73,28 @@ const DEFAULT_FOOTER_LINKS = [
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/* Una tarjeta de preview vive en un absoluto: WhatsApp y LinkedIn no resuelven
+   rutas relativas, y un 301 al dominio nuevo algunos scrapers no lo siguen. */
+const absUrl = (p) => (p.startsWith('http') ? p : origin + withBase(p))
+
+/* Lo que va al final del <head>: la analítica del sitio y el JSON-LD de la
+   página, si los hay. Ambos son opcionales — sin config, esto no emite nada. */
+function headExtra(page) {
+  const out = []
+  if (analytics?.src) {
+    const attrs = Object.entries(analytics.attrs ?? {})
+      .map(([k, v]) => ` ${k}="${esc(v)}"`)
+      .join('')
+    out.push(`<script async defer src="${esc(analytics.src)}"${attrs}></script>`)
+  }
+  if (page.meta.jsonld) {
+    // El único escape que necesita un ld+json es cortar un </script> literal.
+    const json = JSON.stringify(page.meta.jsonld).replace(/</g, '\\u003c')
+    out.push(`<script type="application/ld+json">${json}</script>`)
+  }
+  return out.join('\n')
+}
 
 const urlFor = (slug, lang) => {
   const prefix = lang === DEFAULT_LANG ? BASE : `${BASE}${lang}/`
@@ -202,7 +226,11 @@ for (const p of pages) {
     .replaceAll('{{description}}', esc(p.meta.description))
     .replaceAll('{{url}}', url)
     .replaceAll('{{origin}}', origin)
-    .replaceAll('{{og_image}}', ogImage.startsWith('http') ? ogImage : origin + withBase(ogImage))
+    .replaceAll('{{og_image}}', absUrl(p.meta.ogImage ?? ogImage))
+    .replaceAll('{{og_image_w}}', String(ogImageSize[0]))
+    .replaceAll('{{og_image_h}}', String(ogImageSize[1]))
+    .replaceAll('{{og_image_alt}}', esc(p.meta.ogImageAlt ?? p.meta.title))
+    .replaceAll('{{head_extra}}', headExtra(p))
     .replaceAll('{{canonical}}', canonical)
     .replaceAll('{{alternates}}', alternates)
     .replaceAll('{{styles}}', stylesHtml)

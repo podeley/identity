@@ -223,6 +223,10 @@ a, button { color: inherit; }
 .foot-note a { color: var(--pd-text-muted); text-decoration: none; }
 .foot-map a:hover,
 .foot-note a:hover { color: var(--pd-text); }
+/* La nota del pie sí es un bloque de texto con un link adentro, y ahí el color
+   solo no alcanza para distinguirlo. El mapa de al lado es una lista de links
+   y no lo necesita. */
+.foot-note a { text-decoration: underline; text-underline-offset: .25em; }
 .foot-fine { margin-top: var(--pd-sp-3); max-width: 60ch; }
 
 /* ---------- responsive ---------------------------------------------------- */
@@ -231,6 +235,11 @@ a, button { color: inherit; }
   .masthead-inner { flex-wrap: wrap; padding-block: .55rem; row-gap: .5rem; min-height: 0; }
   .nav { order: 3; width: 100%; gap: var(--pd-sp-4); overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
+  /* Área táctil: en el celular estos links quedaban en 23 px de alto y los del
+     pie en 15 px. El padding no mueve la maqueta porque son cajas en línea. */
+  .nav a { display: inline-block; padding-block: .45rem; }
+  .foot-map a,
+  .foot-note a { display: inline-block; padding-block: .3rem; }
 }
 @media (max-width: 620px) {
   .hero h1 { max-width: 100%; }

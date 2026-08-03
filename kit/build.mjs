@@ -43,7 +43,11 @@ const DEFAULT_LANG = langs[0]
    podeley.github.io/sat-litio/, "/" para un dominio propio. Permite publicar en
    github.io antes de que exista el CNAME, sin tocar el copy — las páginas
    siguen escribiéndose con rutas absolutas tipo /assets/foo.png. */
-const BASE = '/' + (config.basePath ?? '').replace(/^\/+|\/+$/g, '') + '/'
+/* Sin basePath (dominio propio) la base es "/" a secas. Concatenar las barras
+   daría "//", que no es la raíz: como href es una URL protocol-relative, y
+   "//styles/chrome.css" apunta al host "styles". */
+const _basePath = (config.basePath ?? '').replace(/^\/+|\/+$/g, '')
+const BASE = _basePath ? `/${_basePath}/` : '/'
 const withBase = (p) => (BASE === '/' ? p : p.replace(/^\//, BASE))
 
 /* Chrome strings live here, not in each site — that is the point of the kit. */
@@ -216,7 +220,10 @@ for (const p of pages) {
   // One language, or no counterpart page → no toggle at all.
   const toggle =
     other && !isErrorPage
-      ? `<a class="lang-toggle" href="${translated ? urlFor(p.slug, other) : urlFor('index', other)}" hreflang="${other}" lang="${other}">${STRINGS[other].altLabel}</a>`
+      // `altLabel` es la etiqueta que le corresponde a ESTA página, y ya vale
+      // el idioma de destino: STRINGS.es.altLabel === 'EN'. Buscarla por
+      // `other` daba el botón al revés — en español decía ES y llevaba a /en/.
+      ? `<a class="lang-toggle" href="${translated ? urlFor(p.slug, other) : urlFor('index', other)}" hreflang="${other}" lang="${other}">${STRINGS[p.lang].altLabel}</a>`
       : ''
 
   const html = layout

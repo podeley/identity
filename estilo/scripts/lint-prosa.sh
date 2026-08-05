@@ -85,12 +85,10 @@ lang_of() {
   [ "$en" -gt "$es" ] && echo en || echo es
 }
 
-# Umbrales por párrafo. El em dash espaciado es rasgo de estilo del corpus, no un defecto:
-# se marca recién cuando se acumula. Research tolera una negrita más porque marca términos.
+# Umbral de negrita por párrafo. Research tolera una más porque marca términos.
 case "$PERFIL" in
-  research) MAXDASH=3; MAXNEG=3 ;;
-  ajena)    MAXDASH=4; MAXNEG=3 ;;
-  *)        MAXDASH=2; MAXNEG=2 ;;
+  research|ajena) MAXNEG=3 ;;
+  *)              MAXNEG=2 ;;
 esac
 
 # Glifos funcionales: marcadores de tabla y signos técnicos. No son emoji decorativo.
@@ -135,7 +133,7 @@ for f in "${FILES[@]}"; do
     #  Una longitud de onda (`2.165 µm`, banda Al-OH) es decimal, nunca miles.
     grep -nE '\b[1-9][0-9]{0,2}\.[0-9]{3}\b([^0-9]|$)' "$TMP" 2>/dev/null \
       | grep -vE '[0-9]\.[0-9]{3} ?(µm|um|nm)' \
-      | grep -viE 'v[0-9]|versión|version|python|node|figura|tabla|sección|§|p *[=<>]|r *=|https?://|doi\.org|10\.[0-9]{4}/' \
+      | grep -viE 'v[0-9]|versión|version|python|node|figura|tabla|sección|§|p *[=<>]|r *=|https?://|doi\.org|10\.[0-9]{4}/|ley(es)? +n?[°º]? *[0-9]|\blaw\b' \
       | awk -F: -v f="$f" '{ print f ":" $1 ": [MILES] ¿separador de miles con punto? — revisar; los miles van con coma (19,671)" }' >> "$OUT"
   fi
 
@@ -149,19 +147,19 @@ for f in "${FILES[@]}"; do
       | awk -F: -v f="$f" '{ print f ":" $1 ": [FECHA] mes en mayúscula — en español va minúscula" }' >> "$OUT"
   fi
 
-  # 6. Em dash mal formado.
-  grep -nE '[[:alnum:]]—|—[[:alnum:]]|[[:alnum:]] -- ' "$TMP" 2>/dev/null \
-    | awk -F: -v f="$f" '{ print f ":" $1 ": [EMDASH] em dash sin espaciar o \"--\" — va \" — \"" }' >> "$OUT"
+  # 6. Em dash: prohibido en prosa desde 2026-08-03 (Capa 1, regla 9). Sobrevive solo como
+  #    separador en <title> y metadata; el en dash de rangos (–) no se toca.
+  grep -nE '—|[[:alnum:]] -- ' "$TMP" 2>/dev/null \
+    | grep -vE '"(title|description|ogImageAlt|og:title|name)"' \
+    | awk -F: -v f="$f" '{ print f ":" $1 ": [EMDASH] em dash en prosa — reescribir con coma, paréntesis o dos puntos" }' >> "$OUT"
 
-  # 7. Densidad de negrita y em dash por párrafo. Tablas, headers y citas no cuentan.
-  awk -v file="$f" -v maxdash="$MAXDASH" -v maxneg="$MAXNEG" '
-    function flush(   nb, nd, p) {
+  # 7. Densidad de negrita por párrafo. Tablas, headers y citas no cuentan.
+  awk -v file="$f" -v maxneg="$MAXNEG" '
+    function flush(   nb, p) {
       if (para == "") return
       p = para
       nb = gsub(/\*\*/, "&", p) / 2
-      nd = gsub(/ — /, "&", p)
       if (nb > maxneg)  printf "%s:%d: [NEGRITA] %d énfasis en un párrafo — máximo %d\n", file, start, nb, maxneg
-      if (nd > maxdash) printf "%s:%d: [EMDASH] %d em dash en un párrafo — máximo %d\n", file, start, nd, maxdash
       para = ""
     }
     /^[[:space:]]*$/          { flush(); next }
@@ -170,6 +168,19 @@ for f in "${FILES[@]}"; do
     { if (para == "") start = NR; para = para " " $0 }
     END { flush() }
   ' "$TMP" >> "$OUT"
+
+  # 8b. Voseo en demo comercial — Capa 2, regla 9 (registro impersonal desde 2026-08-03).
+  #     Solo español y solo perfil demo; didactico lo conserva, y las páginas research de
+  #     podeley.ar quedan exentas (otro público, otro tono).
+  if [ "$PERFIL" = demo ] && [ "$lang" = es ]; then
+    case "$(basename "$f")" in
+      research.*) : ;;
+      *)
+        grep -nwiE 'vos|tu|tus|podés|tenés|querés|necesitás|sabés|trabajás|elegís|decís|digas|escribime|escribinos|contame|mandame|agendá|empezá|mirá|tocá|fijate|sumate' "$TMP" 2>/dev/null \
+          | awk -F: -v f="$f" '{ print f ":" $1 ": [VOSEO] voseo en demo comercial — registro impersonal (se, infinitivos, su)" }' >> "$OUT"
+        ;;
+    esac
+  fi
 
   # 8. Oraciones largas — Capa 2, solo perfil demo.
   if [ "$PERFIL" = demo ]; then
@@ -216,7 +227,7 @@ if [ "$CHECK_DUP" -eq 1 ] && [ ${#FILES[@]} -gt 1 ]; then
         NF >= minw && length($0) >= minc {
           s = tolower($0)
           # La bio es la única repetición obligatoria — ver "Anti-molde" en SKILL.md.
-          if (s ~ /años en energía|years in energy|these tools myself|herramientas las construyo/) next
+          if (s ~ /años en energía|years in energy|simulación de yacimientos gigantes|simulation of giant fields|oficio detrás de este sitio|craft behind this site|armar el proyecto o la herramienta|the project or the tool that answers/) next
           print s "\t" proj "\t" file
         }'
   done | sort -u > "$pairs"

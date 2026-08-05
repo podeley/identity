@@ -128,10 +128,13 @@ Ese header ya carga el hallazgo. "Por qué importa" no carga nada.
 página de podeley.ar (contado el 2026-08-04). A la tercera repetición el lector ya no lee el
 argumento: lee el pedido de prompt que ordenó enfatizarlo.
 
-**El remate se raciona.** "Mide movimiento, no causa", "está declarado, no corregido", "Nadie
-lo conoce como quien lo opera". Cada uno vale; cuando cada tarjeta y cada párrafo cierran con
-sentencia, la página suena a percusión de copy. Presupuesto: un giro "no X sino Y" y dos
-remates por página. Las demás oraciones pueden terminar sin golpe.
+**El remate se raciona.** "Mide movimiento, no causa", "está declarado, no corregido". Cada
+uno vale; cuando cada tarjeta y cada párrafo cierran con sentencia, la página suena a
+percusión de copy. Presupuesto: un giro "no X sino Y" y dos remates por página, y solo para
+los que cargan un dato o un límite. Tres familias se van enteras (decisión del 2026-08-04,
+segunda pasada de podeley.ar): la promesa de método ("lo que no alcance para una conclusión
+se avisa antes de que salga la campaña"), el cierre de credencial en copetes ("del lado que
+toma las decisiones") y el aforismo de cierre ("Nadie lo conoce como quien lo opera").
 
 **El título-fórmula de tarjeta.** Infinitivo + beneficio + "sin / antes de" + costo evitado:
 "Comparar declinación y EUR sin comprar datos", "Priorizar blancos antes de pagar la campaña",

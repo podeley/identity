@@ -188,8 +188,12 @@ decir algo falso, no sirve.
 > "La espectrometría satelital no encuentra la mena: encuentra la huella de alteración que dejan
 > los sistemas que forman yacimientos."
 
-> "Argentina no tiene catastro minero nacional: cada provincia publica el suyo con formato
-> distinto, y varias no publican nada."
+> "El Capítulo IV se publica con 13.5 meses de rezago, y lo que pasa abajo no se publica
+> nunca."
+
+(El ejemplo anterior acá era "Argentina no tiene catastro minero nacional". Se retiró del
+corpus el 2026-08-05: era demasiado absoluto — SIGAM publica una vista con ese nombre — y lo
+factual gana a lo retórico. Chequeá el hecho antes de preservar la apertura.)
 
 Una por página. El mismo giro repetido en cada párrafo deja de ser apertura y pasa a ser
 molde: el presupuesto está en Anti-molde.

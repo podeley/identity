@@ -26,7 +26,7 @@ Mirá el `identity.json` del repo si existe, o inferí por el tipo de proyecto:
 
 | perfil de prosa | `identity.json` | proyectos | qué cambia |
 |---|---|---|---|
-| `demo` | `demo`, `portfolio` | `sat-*`, `podeley.ar` | hero de una oración; cero jerga sin traducir; bloque de límite obligatorio |
+| `demo` | `demo`, `portfolio` | `sat-*`, `podeley.ar` | hero de una oración; léxico del dominio sin traducir (Capa 2, regla 10); bloque de límite obligatorio; registro impersonal en ES (Capa 2, regla 9) |
 | `research` | `mkdocs` | los 14 MkDocs de `research/`, `sat-subsidencia`, papers | tolera notación y densidad técnica; sección de límites obligatoria; pasiva refleja permitida en método |
 | `didactico` | — | `curso-ia-energia`, `satelites-eo`, `interpretabilidad-mecanicista`, el curso de `estado-red-gas` | segunda persona con voseo; siglas siempre expandidas; metáforas que no mienten |
 | `ajena` | — | `nomadaligners-v2` y futuros clientes | **solo Capa 1**. La voz la define el CLAUDE.md del repo, no esta guía |
@@ -52,8 +52,11 @@ Aplica a todos los perfiles, sin excepción.
 6. Fechas en prosa inglesa: `May 27, 2026`.
 7. Fechas en datos, metadata, front-matter y nombres de archivo: ISO `2026-05-27`.
 8. Rangos con en dash y sin espacios: `2014–2026`, `El Indio–Pascua`, `páginas 12–18`.
-9. Em dash espaciado como inciso: `texto — inciso — texto`. Nunca `--`, nunca pegado.
-   Máximo uno por párrafo en `research`, dos en `demo`.
+9. **Nada de em dash en prosa, en ningún idioma ni perfil.** Es el tic más reconocible de la
+   redacción con IA (decisión del 2026-08-03; antes la guía lo permitía espaciado). El inciso
+   va entre comas, entre paréntesis o después de dos puntos. El `—` sobrevive solo como
+   separador en `<title>` y metadata ("CV — Matías Podeley"); el en dash de rangos (regla 8)
+   no cambia. Nunca `--`.
 10. Comillas rectas `"` en todo. No migres a `«»` ni a `“”`.
 11. Siglas: primera mención expandida con la sigla entre paréntesis, después solo la sigla.
     Excepción en `research` y `demo` para las del dominio (InSAR, DEM, ASTER, SWIR, MAPE).
@@ -82,6 +85,20 @@ Solo `research`, `demo` y `didactico`. **No** aplica a `ajena`.
 7. Cero emoji. Glifos tipográficos sí: `→ ↓ · ×`.
 8. Sin metadiscurso. Nada de "en este artículo veremos", "como mencionamos antes", "es
    importante destacar", "a continuación", "vale la pena señalar".
+9. **Registro por perfil, en español** (decisión del 2026-08-03: el público de petróleo y
+   minería es mayor y formal). En `demo` comercial — podeley.ar y los `sat-*` — el lector no
+   se conjuga: construcciones con "se", CTAs en infinitivo ("Escribir", "Agendar 20 minutos"),
+   posesivo "su" donde haga falta. Nada de "podés", "escribime", "tu equipo". Sin usted
+   explícito. Bios y CV en estilo nominal: "simulación de yacimientos", no "simulé
+   yacimientos". `didactico` mantiene el voseo. Excepción explícita: la página research de
+   podeley.ar conserva el voseo — su público es otro. Los `sat-*` se migran al tocarlos,
+   como la convención numérica. En inglés no cambia nada: "you" es neutro.
+10. **El lector trabaja en el dominio** (decisión del 2026-08-04; antes `demo` pedía "cero
+    jerga sin traducir"). Cada página se escribe para el que ya entiende del tema: EUR,
+    linepack, parent-child, screening, nominación van sin traducir en `demo` y `research`.
+    Se expande solo lo que ese lector no maneja. La perífrasis divulgativa ("cuánta roca se
+    movió" por "volumen excavado") se tolera en el H1 como gancho; en el cuerpo va el
+    término del rubro.
 
 ---
 
@@ -106,19 +123,40 @@ distintos; "Por qué importa" en cinco archivos. Preferí headers que digan algo
 
 Ese header ya carga el hallazgo. "Por qué importa" no carga nada.
 
+**El argumento no se subraya.** Se dice una vez por página, donde más pesa. El mensaje
+"fuentes a la vista / auditables / para rehacer la cuenta" aparece entre 3 y 6 veces en cada
+página de podeley.ar (contado el 2026-08-04). A la tercera repetición el lector ya no lee el
+argumento: lee el pedido de prompt que ordenó enfatizarlo.
+
+**El remate se raciona.** "Mide movimiento, no causa", "está declarado, no corregido", "Nadie
+lo conoce como quien lo opera". Cada uno vale; cuando cada tarjeta y cada párrafo cierran con
+sentencia, la página suena a percusión de copy. Presupuesto: un giro "no X sino Y" y dos
+remates por página. Las demás oraciones pueden terminar sin golpe.
+
+**El título-fórmula de tarjeta.** Infinitivo + beneficio + "sin / antes de" + costo evitado:
+"Comparar declinación y EUR sin comprar datos", "Priorizar blancos antes de pagar la campaña",
+"Seguir la expansión de un salar sin pisar el terreno". Las diez tarjetas de podeley.ar salen
+de ese molde (2026-08-04). La fórmula es buena; diez veces es formulario. Que al menos la
+mitad de los títulos diga otra cosa: el hallazgo, el número, la herramienta.
+
 **La bio es la única excepción a todo lo anterior.** Tiene que ser idéntica en todos lados. Hay
 dos variantes canónicas, y son distintas a propósito:
 
-*Comercial* (ep, minería, energía):
-> Matías Podeley. Dieciocho años en energía — ingeniería de reservorios, después desarrollo de
-> negocio, casi siempre del lado que contrata a los especialistas. Estas herramientas las
-> construyo yo, con datos públicos e IA. Buenos Aires.
+*Comercial* (home, ep, minería, energía, ciber — nominal e impersonal desde 2026-08-03; el
+cierre carga el oficio desde 2026-08-04, cuando él bajó la etiqueta "consultoría de datos e IA"
+por under sell: lo que vende es criterio, no información):
+> Matías Podeley. Ingeniero del ITBA, dieciocho años en energía: cuatro de operación en
+> Neuquén, simulación de yacimientos gigantes como Camisea, evaluación de proyectos
+> petroquímicos, respaldo técnico a compras de activos por más de US$ 300 millones y cinco
+> años de docencia en evaluación de proyectos. El oficio detrás de este sitio: entender la
+> necesidad de negocio, y armar el proyecto o la herramienta que la resuelve, con IA y
+> fuentes auditables. Buenos Aires.
 
-*Research* (research.es.html):
-> Matías Podeley. Dieciocho años en energía en Argentina — ingeniería de reservorios, después
+*Research* (research.es.html — conserva el tono propio de esa página):
+> Matías Podeley. Dieciocho años en energía en Argentina: ingeniería de reservorios, después
 > desarrollo de negocio. Hoy, investigación independiente en interpretabilidad. Buenos Aires.
 
-Sus versiones en inglés están en `podeley.ar/src/pages/*.en.html:79` y `research.en.html:49`.
+Sus versiones en inglés viven en las páginas `.en` correspondientes de `podeley.ar/src/pages/`.
 Siempre "Dieciocho años en energía", nunca "18 años en la industria del petróleo y gas" — esa
 forma quedó solo en `curso-ia-energia/docs/` y hay que corregirla cuando se toque ese repo.
 
@@ -147,6 +185,9 @@ decir algo falso, no sirve.
 > "Argentina no tiene catastro minero nacional: cada provincia publica el suyo con formato
 > distinto, y varias no publican nada."
 
+Una por página. El mismo giro repetido en cada párrafo deja de ser apertura y pasa a ser
+molde: el presupuesto está en Anti-molde.
+
 **Voz auto-consciente sobre el género del texto.** Decirle al lector qué está por leer calibra
 expectativas y es lo más humano que hay: *"This is the chronological lab notebook — technical and
 unpolished by design."*
@@ -162,6 +203,9 @@ Un grep no puede ver nada de esto. Auditalo a mano:
 - ¿Cada adjetivo evaluativo tiene su número al lado? Si no, borralo.
 - ¿El límite dice qué **no** se puede afirmar, o solo qué falta hacer?
 - ¿La primera oración define, o promociona?
+- ¿Cuántas veces repite la página su argumento de venta? Una.
+- ¿Cuántas tarjetas o párrafos cierran con remate o giro "no X sino Y"? Más de dos es percusión.
+- ¿Hay algún término del dominio perifraseado para lego? Devolvé el término.
 - ¿Cuántas negritas hay en el párrafo más cargado?
 - Si es inglés: ¿está escrito, o traducido? Leelo buscando estructuras del español.
 
@@ -180,11 +224,13 @@ su venue), HTML generado por Plotly o Leaflet, `assets/`, y los glifos funcional
 que no son emoji decorativo. Un `README.md` se revisa pero no entra al chequeo de frases
 repetidas, porque los repos hermanos comparten skeleton a propósito.
 
-Calibración de referencia, para saber cuándo el que está mal es el linter: los sitios `demo` dan
-entre 2 y 3 hallazgos, los de research entre 24 y 40. En research domina NEGRITA y EMDASH, que es
-la densidad que la guía quiere bajar. En los `demo` lo que queda es casi todo numérico: el corpus
-en español está escrito con la convención vieja (`19.671`, `66,4%`, `15 %`) y se migra a la
-inglesa a medida que se toca cada sitio.
+Calibración de referencia, para saber cuándo el que está mal es el linter: podeley.ar ya migró
+(em dash y voseo en cero); los research todavía no, y ahí EMDASH marca cada guion largo desde que
+la regla pasó de "densidad" a "prohibido" (2026-08-03) — decenas de hallazgos por sitio es lo
+esperable hasta que se migren, al tocarlos. En los `demo` viejos lo que queda es casi todo
+numérico: el corpus en español está escrito con la convención vieja (`19.671`, `66,4%`, `15 %`)
+y se migra a la inglesa a medida que se toca cada sitio. VOSEO corre solo con `--perfil demo` y
+no aplica a las páginas research de podeley.ar.
 
 `[MILES]` es la única regla ambigua por diseño: bajo la convención inglesa `19.671` es un decimal
 legítimo, así que el linter solo puede señalar el patrón y pedir revisión. Por eso solo corre en

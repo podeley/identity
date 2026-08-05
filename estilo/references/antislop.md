@@ -84,6 +84,16 @@ incertidumbre y sosténelo.
 **La simetría falsa positivo/negativo.** Dos ventajas y una limitación, siempre, en ese orden.
 Es el molde de las cinco landings `sat-*`. La cantidad la fija el caso, no la plantilla.
 
+**La frase-tambor.** "Las decisiones que no esperan", "antes de que abra la mesa", "antes de
+mover una ficha". Drama sin dato. Si al borrarla no se pierde ningún hecho, se borra.
+
+**El giro "no X sino Y" en cadena.** "La pregunta nunca es X, sino Y", "Lo que corta un casing
+no es el hundimiento sino la diferencia". Uno por página abre; en cada párrafo es tic de
+modelo. Contalos antes de entregar.
+
+**Los dos puntos como plantilla.** Setup: remate, oración tras oración. Tres oraciones seguidas
+con dos puntos delatan el molde aunque cada una esté bien escrita.
+
 ## Emoji
 
 Cero en `demo`, `research` y `didactico`. Glifos tipográficos sí: `→ ↓ · × ≈ ±`.

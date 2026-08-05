@@ -92,7 +92,10 @@ Solo `research`, `demo` y `didactico`. **No** aplica a `ajena`.
    explícito. Bios y CV en estilo nominal: "simulación de yacimientos", no "simulé
    yacimientos". `didactico` mantiene el voseo. Excepción explícita: la página research de
    podeley.ar conserva el voseo — su público es otro. Los `sat-*` se migran al tocarlos,
-   como la convención numérica. En inglés no cambia nada: "you" es neutro.
+   como la convención numérica. En inglés no cambia nada: "you" es neutro. Segunda
+   excepción (decisión del 2026-08-04): el hero de /perfil/ va en primera persona del
+   singular ("Trabajé", "aplico") — suena humano y es su página. La bio canónica sigue
+   nominal, y el lector sigue sin conjugarse.
 10. **El lector trabaja en el dominio** (decisión del 2026-08-04; antes `demo` pedía "cero
     jerga sin traducir"). Cada página se escribe para el que ya entiende del tema: EUR,
     linepack, parent-child, screening, nominación van sin traducir en `demo` y `research`.
